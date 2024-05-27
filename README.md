@@ -37,7 +37,7 @@ To deploy and test the NFTDelegation contract, follow these steps:
    - Use the provided deploy script to deploy the contract.
    - Run the deploy script using:
      ```bash
-     npx hardhat run NFTDelegation.deploy.js --network localhost
+     npx hardhat run scripts/NFTDelegation.deploy.js --network localhost
      ```
    - Replace `<your_network>` with the desired network (e.g., `rinkeby`, `mainnet`, etc.).
 
