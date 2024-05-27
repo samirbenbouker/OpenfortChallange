@@ -5,17 +5,17 @@ The NFTDelegation smart contract facilitates the delegation of ownership rights 
 
 ## Functions
 
-| Function           | Parameters                                                | Emits                                                    | Returns      | Requires                                                 |
-|--------------------|-----------------------------------------------------------|----------------------------------------------------------|--------------|----------------------------------------------------------|
-| `delegateNFT`      | `_delegate`: Address to delegate the token to.            | `Delegated` event with details of the delegation.        | -            | Caller must be the owner of the token.                  |
-|                    | `_tokenId`: ID of the token to be delegated.              |                                                          |              | Delegate address must be valid.                         |
-| `revokeDelegation` | `_tokenId`: ID of the token for which delegation is to be | `Revoked` event indicating the revocation of delegation. | -            | Caller must be the owner of the token.                  |
-|                    |                                                           |                                                          |              | -                                                        |
-| `getDelegate`      | `_tokenId`: ID of the token to get the delegate for.      | -                                                        | Delegate     | -                                                        |
-|                    |                                                           |                                                          | address      | -                                                        |
-| `onERC721Received` | -                                                         | -                                                        | bytes4       | Sender must be the NFT contract.                        |
-|                    |                                                           |                                                          |              | -                                                        |
-| `setNFTContract`   | `_nftContractAddress`: Address of the ERC721 contract.    | -                                                        | -            | -                                                        |
+| Function           | Description                                              | Parameters                                                | Emits                                                    | Returns      | Requires                                                 |
+|--------------------|----------------------------------------------------------|-----------------------------------------------------------|----------------------------------------------------------|--------------|----------------------------------------------------------|
+| `delegateNFT`      | Allows the owner of an NFT to delegate the ownership    | `_delegate`: Address to delegate the token to.            | `Delegated` event with details of the delegation.        | -            | Caller must be the owner of the token.                  |
+|                    | rights of the NFT to another address.                   | `_tokenId`: ID of the token to be delegated.              |                                                          |              | Delegate address must be valid.                         |
+| `revokeDelegation` | Allows the owner of an NFT to revoke the delegation of  | `_tokenId`: ID of the token for which delegation is to be | `Revoked` event indicating the revocation of delegation. | -            | Caller must be the owner of the token.                  |
+|                    | ownership rights of the NFT.                            | revoked.                                                  |                                                          |              | -                                                        |
+| `getDelegate`      | Returns the address of the delegate for a given token   | `_tokenId`: ID of the token to get the delegate for.      | -                                                        | Delegate     | -                                                        |
+|                    | ID.                                                      |                                                           |                                                          | address      | -                                                        |
+| `onERC721Received` | Handles the reception of ERC721 tokens.                 | -                                                         | -                                                        | bytes4       | Sender must be the NFT contract.                        |
+| `setNFTContract`   | Sets the address of the ERC721 contract.                | `_nftContractAddress`: Address of the ERC721 contract.    | -                                                        | -            | -                                                        |
+                                                |
 
 ## Deployment and Testing
 To deploy and test the NFTDelegation contract, follow these steps:
