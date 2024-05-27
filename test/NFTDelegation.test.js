@@ -37,20 +37,10 @@ describe("NFTDelegation", function () {
         expect(delegate).to.equal(addr1.address)
       })
 
-      it("Should allow delegate to redelegate the NFT", async function () {
-        await mockNFT.connect(owner).approve(nftDelegation.getAddress(), 1)
-        await nftDelegation.connect(owner).delegateNFT(addr1.address, 1)
-        await nftDelegation.connect(addr1).delegateNFT(addr2.address, 1)
-
-        const delegate = await nftDelegation.getDelegate(1)
-
-        expect(delegate).to.equal(addr2.address)
-      })
-
       it("Should allow the owner to transfer the NFT after they have transferred it", async function () {
         await mockNFT.connect(owner).approve(nftDelegation.getAddress(), 1)
         await nftDelegation.connect(owner).delegateNFT(addr1.address, 1)
-        await nftDelegation.connect(addr1).delegateNFT(addr2.address, 1)
+        await nftDelegation.connect(owner).delegateNFT(addr2.address, 1)
 
         const delegate = await nftDelegation.getDelegate(1)
         expect(delegate).to.equal(addr2.address)
@@ -92,37 +82,29 @@ describe("NFTDelegation", function () {
     })
 
     describe("Delegate", function () {
-      it("Should show 'You are not the owner or current delegate of this NFT' message", async function () {
+      it("Should show 'You are not the owner of this NFT' message", async function () {
         await mockNFT.connect(owner).approve(nftDelegation.getAddress(), 1)
         await nftDelegation.connect(owner).delegateNFT(addr1.address, 1)
 
         await expect(nftDelegation.connect(addr2).delegateNFT(addr1.address, 1))
-          .to.be.revertedWith("You are not the owner or current delegate of this NFT");
+          .to.be.revertedWith("You are not the owner of this NFT");
       })
 
       it("Should show 'Invalid delegate address' message", async function () {
         await mockNFT.connect(owner).approve(nftDelegation.getAddress(), 1)
         await nftDelegation.connect(owner).delegateNFT(addr1.address, 1)
 
-        await expect(nftDelegation.connect(addr1).delegateNFT(constants.ZERO_ADDRESS, 1))
+        await expect(nftDelegation.connect(owner).delegateNFT(constants.ZERO_ADDRESS, 1))
           .to.be.revertedWith("Invalid delegate address");
       })
     })
 
     describe("Transfer Delegate Rights", function () {
-      it("Should show 'Only the current delegate can transfer their rights' message", async function () {
-        await mockNFT.connect(owner).approve(nftDelegation.getAddress(), 1)
-        await nftDelegation.connect(owner).delegateNFT(addr1.address, 1)
-
-        await expect(nftDelegation.connect(owner).transferDelegateRights(1, addr2))
-          .to.be.revertedWith("Only the current delegate can transfer their rights");
-      })
-
       it("Should show 'Invalid delegate address' message", async function () {
         await mockNFT.connect(owner).approve(nftDelegation.getAddress(), 1)
         await nftDelegation.connect(owner).delegateNFT(addr1.address, 1)
 
-        await expect(nftDelegation.connect(addr1).transferDelegateRights(1, constants.ZERO_ADDRESS))
+        await expect(nftDelegation.connect(owner).delegateNFT(constants.ZERO_ADDRESS, 1))
           .to.be.revertedWith("Invalid delegate address");
       })
     })

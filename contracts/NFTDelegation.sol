@@ -5,8 +5,8 @@ import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol";
 
 contract NFTDelegation is IERC721Receiver {
-    mapping(uint256 => address) private _delegates;
-    IERC721 private _nftContract;
+    mapping(uint256 => address) private delegates;
+    IERC721 private nftContract;
 
     event Delegated(
         address indexed owner,
@@ -17,58 +17,56 @@ contract NFTDelegation is IERC721Receiver {
 
     constructor() {}
 
-    function delegateNFT(address delegate, uint256 tokenId) public {
-        address owner = _nftContract.ownerOf(tokenId);
-        require(
-            owner == msg.sender || _delegates[tokenId] == msg.sender,
-            "You are not the owner or current delegate of this NFT"
-        );
-        require(delegate != address(0), "Invalid delegate address");
+    function delegateNFT(address _delegate, uint256 _tokenId) public {
+        address owner = nftContract.ownerOf(_tokenId);
+        require(owner == msg.sender, "You are not the owner of this NFT");
+        require(_delegate != address(0), "Invalid delegate address");
 
-        address currentDelegate = _delegates[tokenId];
-        _delegates[tokenId] = delegate;
+        address currentDelegate = delegates[_tokenId];
+        delegates[_tokenId] = _delegate;
 
         if (currentDelegate != address(0)) {
-            emit Revoked(owner, tokenId);
+            emit Revoked(owner, _tokenId);
         }
-        emit Delegated(owner, delegate, tokenId);
+        emit Delegated(owner, _delegate, _tokenId);
     }
 
-    function _revokeDelegation(uint256 tokenId) public {
-        address owner = _nftContract.ownerOf(tokenId);
-        delete _delegates[tokenId];
-        emit Revoked(owner, tokenId);
+    function _revokeDelegation(uint256 _tokenId) public {
+        address owner = nftContract.ownerOf(_tokenId);
+        delete delegates[_tokenId];
+        emit Revoked(owner, _tokenId);
     }
 
-    function getDelegate(uint256 tokenId) public view returns (address) {
-        return _delegates[tokenId];
+    function getDelegate(uint256 _tokenId) public view returns (address) {
+        return delegates[_tokenId];
     }
 
     function onERC721Received(
         address,
         address,
-        uint256 tokenId,
+        uint256 _tokenId,
         bytes calldata
     ) external override returns (bytes4) {
         require(
-            msg.sender == address(_nftContract),
+            msg.sender == address(nftContract),
             "Only allowed from the NFT contract"
         );
-        _revokeDelegation(tokenId);
+        _revokeDelegation(_tokenId);
         return this.onERC721Received.selector;
     }
 
-    function setNFTContract(address nftContractAddress) public {
-        _nftContract = IERC721(nftContractAddress);
+    function setNFTContract(address _nftContractAddress) public {
+        nftContract = IERC721(_nftContractAddress);
     }
 
-    function transferDelegateRights(uint256 tokenId, address to) external {
-        require(
-            _delegates[tokenId] == msg.sender,
-            "Only the current delegate can transfer their rights"
-        );
-        require(to != address(0), "Invalid delegate address");
+    // The delegate can transfer the nft to another wallet, losing said nft
+    //function transferDelegateRights(uint256 tokenId, address to) external {
+    //    require(
+    //        delegates[tokenId] == msg.sender,
+    //        "Only the current delegate can transfer their rights"
+    //    );
+    //    require(to != address(0), "Invalid delegate address");
 
-        _delegates[tokenId] = to;
-    }
+    //    delegates[tokenId] = to;
+    //}
 }

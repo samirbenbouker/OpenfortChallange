@@ -16,21 +16,21 @@ contract MockNFT is ERC721, Ownable {
         nftDelegation = NFTDelegation(_nftDelegationContract);
     }
 
-    function mint(address to, uint256 tokenId) external onlyOwner {
-        _mint(to, tokenId);
+    function mint(address _to, uint256 _tokenId) external onlyOwner {
+        _mint(_to, _tokenId);
     }
 
     function transferFrom(
-        address from,
-        address to,
-        uint256 tokenId
+        address _from,
+        address _to,
+        uint256 _tokenId
     ) public virtual override {
-        _transfer(from, to, tokenId);
+        _transfer(_from, _to, _tokenId);
         require(
             IERC721Receiver(nftDelegationContract).onERC721Received(
                 msg.sender,
-                from,
-                tokenId,
+                _from,
+                _tokenId,
                 ""
             ) == this.onERC721Received.selector,
             "ERC721 transfer to non ERC721Receiver implementer"
@@ -38,14 +38,14 @@ contract MockNFT is ERC721, Ownable {
     }
 
     function _transfer(
-        address from,
-        address to,
-        uint256 tokenId
+        address _from,
+        address _to,
+        uint256 _tokenId
     ) internal override {
-        address currentOwner = ownerOf(tokenId);
-        super._transfer(from, to, tokenId);
-        if (currentOwner != to) {
-            revokeDelegation(tokenId);
+        address currentOwner = ownerOf(_tokenId);
+        super._transfer(_from, _to, _tokenId);
+        if (currentOwner != _to) {
+            revokeDelegation(_tokenId);
         }
     }
 
@@ -62,10 +62,10 @@ contract MockNFT is ERC721, Ownable {
         return IERC721Receiver.onERC721Received.selector;
     }
 
-    function revokeDelegation(uint256 tokenId) internal {
-        address delegate = nftDelegation.getDelegate(tokenId);
+    function revokeDelegation(uint256 _tokenId) internal {
+        address delegate = nftDelegation.getDelegate(_tokenId);
         if (delegate != address(0)) {
-            nftDelegation._revokeDelegation(tokenId);
+            nftDelegation._revokeDelegation(_tokenId);
         }
     }
 }
