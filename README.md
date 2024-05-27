@@ -22,22 +22,21 @@ To deploy and test the NFTDelegation contract, follow these steps:
 
 1. **Clone the Project**
    - Clone the project repository from GitHub using the following command:
-     ```
+     ```bash
      git clone https://github.com/samirbenbouker/OpenfortChallange/tree/main
      ```
 
 2. **Setup**
    - Install project dependencies:
-     ```
+     ```bash
      npm install
      ```
 
 3. **Deployment**
    - Ensure you have Hardhat installed and configured.
    - Use the provided deploy script to deploy the contract.
-   - Replace placeholders in the deploy script with actual values, such as the URI for ERC1155 tokens and the address of the ERC20 token.
    - Run the deploy script using:
-     ```
+     ```bash
      npx hardhat run NFTDelegation.deploy.js --network localhost
      ```
    - Replace `<your_network>` with the desired network (e.g., `rinkeby`, `mainnet`, etc.).
@@ -47,6 +46,6 @@ To deploy and test the NFTDelegation contract, follow these steps:
    - Create a test file with relevant test cases for each function.
    - Ensure your tests cover various scenarios including delegation, revocation, and error cases.
    - Run your test file using:
-     ```
+     ```bash
      npx hardhat test
      ```
