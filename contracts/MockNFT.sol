@@ -65,7 +65,7 @@ contract MockNFT is ERC721, Ownable {
     function revokeDelegation(uint256 _tokenId) internal {
         address delegate = nftDelegation.getDelegate(_tokenId);
         if (delegate != address(0)) {
-            nftDelegation._revokeDelegation(_tokenId);
+            nftDelegation.revokeDelegation(_tokenId);
         }
     }
 }

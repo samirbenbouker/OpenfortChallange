@@ -31,7 +31,7 @@ contract NFTDelegation is IERC721Receiver {
         emit Delegated(owner, _delegate, _tokenId);
     }
 
-    function _revokeDelegation(uint256 _tokenId) public {
+    function revokeDelegation(uint256 _tokenId) public {
         address owner = nftContract.ownerOf(_tokenId);
         delete delegates[_tokenId];
         emit Revoked(owner, _tokenId);
@@ -51,7 +51,7 @@ contract NFTDelegation is IERC721Receiver {
             msg.sender == address(nftContract),
             "Only allowed from the NFT contract"
         );
-        _revokeDelegation(_tokenId);
+        revokeDelegation(_tokenId);
         return this.onERC721Received.selector;
     }
 
