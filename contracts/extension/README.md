@@ -31,7 +31,7 @@ The NFTDelegationExtension smart contract extends the functionality of ERC1155 t
    - Use the provided deploy script to deploy the contract.
    - Run the deploy script using:
      ```bash
-     npx hardhat run NFTDelegation.extension.deploy.js --network localhost
+     npx hardhat run scripts/NFTDelegation.extension.deploy.js --network localhost
      ```
    - Replace `<your_network>` with the desired network (e.g., `rinkeby`, `mainnet`, etc.).
 
